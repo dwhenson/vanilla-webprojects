@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta name="description" content="simple sign up form with validation" />
+		<title>Register</title>
+		<link rel="stylesheet" href="../../reset.css" />
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<form id="form" novalidate>
+		<h1>Register With Us</h1>
+		<label for="username">Username</label>
+		<input id="username" type="text" name="username" placeholder="Enter username" />
+		<span class="error" aria-live="polite"></span>
+		<label for="Email">Email</label>
+		<input id="email" type="email" name="email" placeholder="Enter email" username />
+		<span class="error" aria-live="polite"></span>
+		<label for="password">Password</label>
+		<input id="password" type="password" name="password" placeholder="Enter password" />
+		<span class="error" aria-live="polite"></span>
+		<label for="confirm">Confirm Password</label>
+		<input id="confirm" type="password" name="confirm" placeholder="Enter password again" />
+		<span class="error" aria-live="polite"></span>
+		<button>Submit</button>
+	</form>
+
+	<body>
+		<script src="script.js"></script>
+	</body>
+</html>
