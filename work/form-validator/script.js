@@ -1,14 +1,3 @@
-// TODO
-//
-// Basically, I want no listeners, only check if things are OK when submitted by adding
-// the required attributes. Then if not valid add listeners and check on input.
-//
-// Instead of individual listeners can I use event delegation and event.target?
-// - Requires two listeners - input and submit
-// Separate out required attributes and add on first submit, to give user a chance first
-// Make showError a check event.target and then call specific showError function
-// Update HTML (or functions) so that correct span is targeted)
-
 /* ==========  Variables  ========== */
 
 const form = document.querySelector("#form");
@@ -61,8 +50,12 @@ function valueMissing(input, container) {
 	}
 }
 
-function inputHandler(event) {
-	console.log(event.target);
+function checkPasswords() {
+	if (password.value !== confirm.value) {
+		const messageContainer = document.querySelector(`.confirm-error`);
+		messageContainer.classList.add("error", "active");
+		messageContainer.textContent = `Please check your passwords match`;
+	}
 }
 
 function showErrors() {
@@ -76,23 +69,44 @@ function showErrors() {
 		} else if (input.validity.typeMismatch) {
 			typeMismatch(input, messageContainer);
 		}
-		input.className = "error active";
+		messageContainer.classList.add("error", "active");
 	});
+	checkPasswords();
+}
+
+function inputHandler() {
+	inputs.forEach((input) => {
+		if (!input.validity.valid) {
+			showErrors();
+		}
+		const messageContainer = document.querySelector(`.${input.id}-error`);
+		messageContainer.classList.remove("error", "active");
+		messageContainer.textContent = "";
+		input.classList.add("success");
+	});
+	showErrors();
 }
 
 function setChecks() {
 	username.setAttribute("minlength", 3);
 	username.setAttribute("required", "");
+	email.setAttribute("type", "email");
 	email.setAttribute("required", "");
 	password.setAttribute("minlength", 6);
 	password.setAttribute("required", "");
 	confirm.setAttribute("required", "");
 }
 
+function focusOnError() {
+	const errors = document.querySelectorAll("input:invalid");
+	errors[0].focus();
+}
+
 form.addEventListener("submit", function (event) {
 	setChecks();
 	if (!form.checkValidity()) {
 		event.preventDefault();
+		focusOnError();
 		showErrors();
 		form.addEventListener("input", inputHandler);
 	} else {
