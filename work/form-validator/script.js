@@ -14,46 +14,88 @@
 const form = document.querySelector("#form");
 const username = document.querySelector("#username");
 const email = document.querySelector("#email");
-const emailError = document.querySelector(".email-error");
 const password = document.querySelector("#password");
 const confirm = document.querySelector("#confirm");
+const inputs = Array.from(document.querySelectorAll("input"));
 
 /* ==========  Functions  ========== */
 
-function showError() {
-	if (email.validity.valueMissing) {
-		emailError.textContent = "Please add your email address";
-	} else if (email.validity.typeMismatch) {
-		emailError.textContent = "Please check your email address";
+function typeMismatch(input, container) {
+	switch (input.id) {
+		case "email":
+			container.textContent = `Please check your email address`;
+			break;
+		default:
+			container.textContent = `Please complete this field`;
 	}
-	emailError.className = "error active";
+}
+function tooShort(input, container) {
+	switch (input.id) {
+		case "username":
+			container.textContent = `Please add a username at least 3 characters long`;
+			break;
+		case "password":
+			container.textContent = `Please add a password at least 6 characters long`;
+			break;
+		default:
+			container.textContent = `Please complete this field`;
+	}
 }
 
-/* ==========  Inits and Event Listeners  ========== */
-
-username.addEventListener("input", function () {
-	if (username.validity.valid) {
-		username.nextElementSibling.innerHTML = "";
-		username.nextElementSibling.className = "error";
-	} else {
-		showError();
+function valueMissing(input, container) {
+	switch (input.id) {
+		case "username":
+			container.textContent = `Please add a username at least 3 characters long`;
+			break;
+		case "email":
+			container.textContent = `Please add an email address`;
+			break;
+		case "password":
+			container.textContent = `Please add a password at least 6 characters long`;
+			break;
+		case "confirm":
+			container.textContent = `Please type your password again`;
+			break;
+		default:
+			container.textContent = `Please complete this field`;
 	}
-});
+}
 
-email.addEventListener("input", function () {
-	if (email.validity.valid) {
-		emailError.innerHTML = "";
-		emailError.className = "error";
-	} else {
-		showError();
-	}
-});
+function inputHandler(event) {
+	console.log(event.target);
+}
+
+function showErrors() {
+	inputs.forEach((input) => {
+		if (input.validity.valid) return;
+		const messageContainer = document.querySelector(`.${input.id}-error`);
+		if (input.validity.valueMissing) {
+			valueMissing(input, messageContainer);
+		} else if (input.validity.tooShort) {
+			tooShort(input, messageContainer);
+		} else if (input.validity.typeMismatch) {
+			typeMismatch(input, messageContainer);
+		}
+		input.className = "error active";
+	});
+}
+
+function setChecks() {
+	username.setAttribute("minlength", 3);
+	username.setAttribute("required", "");
+	email.setAttribute("required", "");
+	password.setAttribute("minlength", 6);
+	password.setAttribute("required", "");
+	confirm.setAttribute("required", "");
+}
 
 form.addEventListener("submit", function (event) {
-	username.setAttribute("minlength", 3);
-	email.setAttribute("required", "");
-	if (!email.validity.valid) {
-		showError();
+	setChecks();
+	if (!form.checkValidity()) {
 		event.preventDefault();
+		showErrors();
+		form.addEventListener("input", inputHandler);
+	} else {
+		form.submit();
 	}
 });
