@@ -1,4 +1,8 @@
 // TODO
+//
+// Basically, I want no listeners, only check if things are OK when submitted by adding
+// the required attributes. Then if not valid add listeners and check on input.
+//
 // Instead of individual listeners can I use event delegation and event.target?
 // - Requires two listeners - input and submit
 // Separate out required attributes and add on first submit, to give user a chance first
@@ -10,7 +14,7 @@
 const form = document.querySelector("#form");
 const username = document.querySelector("#username");
 const email = document.querySelector("#email");
-const emailError = document.querySelector("#email + span.error");
+const emailError = document.querySelector(".email-error");
 const password = document.querySelector("#password");
 const confirm = document.querySelector("#confirm");
 
