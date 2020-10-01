@@ -9,6 +9,14 @@ const inputs = Array.from(document.querySelectorAll("input"));
 
 /* ==========  Functions  ========== */
 
+/**
+ * Renders error messages in case ot typeMismatch failure
+ *
+ * @param   {Object}  input      The element being verified
+ * @param   {Object}  container  The element to render the error message inside
+ *
+ * @return  {String}             The error message
+ */
 function typeMismatch(input, container) {
 	switch (input.id) {
 		case "email":
@@ -18,6 +26,15 @@ function typeMismatch(input, container) {
 			container.textContent = `Please complete this field`;
 	}
 }
+
+/**
+ * Renders error messages in case ot tooShort failure
+ *
+ * @param   {Object}  input      The element being verified
+ * @param   {Object}  container  The element to render the error message inside
+ *
+ * @return  {String}             The error message
+ */
 function tooShort(input, container) {
 	switch (input.id) {
 		case "username":
@@ -31,6 +48,14 @@ function tooShort(input, container) {
 	}
 }
 
+/**
+ * Renders error messages in case ot valueMissing failure
+ *
+ * @param   {Object}  input      The element being verified
+ * @param   {Object}  container  The element to render the error message inside
+ *
+ * @return  {String}             The error message
+ */
 function valueMissing(input, container) {
 	switch (input.id) {
 		case "username":
@@ -50,30 +75,46 @@ function valueMissing(input, container) {
 	}
 }
 
+/**
+ * Checks if the password and confirm password values are identical
+ */
 function checkPasswords() {
 	if (password.value !== confirm.value) {
+		confirm.classList.remove("success");
+		confirm.classList.add("password-check");
+
 		const messageContainer = document.querySelector(`.confirm-error`);
 		messageContainer.classList.add("error", "active");
 		messageContainer.textContent = `Please check your passwords match`;
+		return;
 	}
+	confirm.classList.remove("password-check");
 }
 
+/**
+ * Checks the input elements for validity errors calls function to render error messages
+ */
 function showErrors() {
 	inputs.forEach((input) => {
-		if (input.validity.valid) return;
 		const messageContainer = document.querySelector(`.${input.id}-error`);
-		if (input.validity.valueMissing) {
+		if (input.validity.valid) {
+			input.classList.add("success");
+		} else if (input.validity.valueMissing) {
 			valueMissing(input, messageContainer);
 		} else if (input.validity.tooShort) {
 			tooShort(input, messageContainer);
 		} else if (input.validity.typeMismatch) {
 			typeMismatch(input, messageContainer);
+		} else if (password.value !== confirm.value) {
+			confirm.classList.add("test");
 		}
 		messageContainer.classList.add("error", "active");
 	});
-	checkPasswords();
 }
 
+/**
+ * Checks if validity errors are resolved on each input event
+ */
 function inputHandler() {
 	inputs.forEach((input) => {
 		if (!input.validity.valid) {
@@ -82,11 +123,16 @@ function inputHandler() {
 		const messageContainer = document.querySelector(`.${input.id}-error`);
 		messageContainer.classList.remove("error", "active");
 		messageContainer.textContent = "";
-		input.classList.add("success");
 	});
 	showErrors();
+	checkPasswords();
 }
 
+/**
+ * Adds attributes to the form required for validity checks
+ *
+ * @return  {[type]}  [return description]
+ */
 function setChecks() {
 	username.setAttribute("minlength", 3);
 	username.setAttribute("required", "");
@@ -97,17 +143,26 @@ function setChecks() {
 	confirm.setAttribute("required", "");
 }
 
+/**
+ * Moves keyboard focus to the first error found in the form
+ */
 function focusOnError() {
 	const errors = document.querySelectorAll("input:invalid");
 	errors[0].focus();
 }
 
+/* ==========  Inits and Event Listeners  ========== */
+
+/**
+ * Listens for the submit event, if validity check fails prevent submission
+ * On failure, show errors and add event listener to check validity on input rather than submit
+ */
 form.addEventListener("submit", function (event) {
 	setChecks();
 	if (!form.checkValidity()) {
 		event.preventDefault();
-		focusOnError();
 		showErrors();
+		focusOnError();
 		form.addEventListener("input", inputHandler);
 	} else {
 		form.submit();

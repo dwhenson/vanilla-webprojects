@@ -63,28 +63,38 @@ button {
 /* Error message styling */
 
 input:invalid {
-	border: 1px solid #900;
+	border: 2px solid #900;
 	color: #900;
 }
 
 input:focus:invalid {
-	border: 2px solid #900;
+	border: 3px solid #900;
 	outline: 0;
 }
 
-.error {
+.password-check {
+	border: 2px solid #900;
 	color: #900;
-	font-size: 80%;
+}
+
+.password-check:focus {
+	border: 3px solid #900;
+	color: #900;
+}
+
+.success {
+	border: 2px solid green;
+}
+
+.success:focus {
+	border: 3px solid green;
 }
 
 .error.active {
 	padding: 0.3em;
 }
 
-.success {
-	border: 1px solid green;
-}
-
-.success:focus {
-	border: 2px solid green;
+.error {
+	color: #900;
+	font-size: 80%;
 }
