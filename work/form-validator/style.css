@@ -82,19 +82,20 @@ input:focus:invalid {
 	color: #900;
 }
 
+.error {
+	color: #900;
+	font-size: 80%;
+}
+
 .success {
 	border: 2px solid green;
 }
 
+.success-text {
+	color: green;
+	font-size: 80%;
+}
+
 .success:focus {
 	border: 3px solid green;
-}
-
-.error.active {
-	padding: 0.3em;
-}
-
-.error {
-	color: #900;
-	font-size: 80%;
 }

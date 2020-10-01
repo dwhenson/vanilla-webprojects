@@ -4,17 +4,15 @@ const form = document.querySelector("#form");
 const username = document.querySelector("#username");
 const email = document.querySelector("#email");
 const password = document.querySelector("#password");
-const confirm = document.querySelector("#confirm");
+const confirm = document.querySelector("#confirmation");
 const inputs = Array.from(document.querySelectorAll("input"));
 
 /* ==========  Functions  ========== */
 
 /**
  * Renders error messages in case ot typeMismatch failure
- *
  * @param   {Object}  input      The element being verified
  * @param   {Object}  container  The element to render the error message inside
- *
  * @return  {String}             The error message
  */
 function typeMismatch(input, container) {
@@ -29,10 +27,8 @@ function typeMismatch(input, container) {
 
 /**
  * Renders error messages in case ot tooShort failure
- *
  * @param   {Object}  input      The element being verified
  * @param   {Object}  container  The element to render the error message inside
- *
  * @return  {String}             The error message
  */
 function tooShort(input, container) {
@@ -50,10 +46,8 @@ function tooShort(input, container) {
 
 /**
  * Renders error messages in case ot valueMissing failure
- *
  * @param   {Object}  input      The element being verified
  * @param   {Object}  container  The element to render the error message inside
- *
  * @return  {String}             The error message
  */
 function valueMissing(input, container) {
@@ -67,7 +61,7 @@ function valueMissing(input, container) {
 		case "password":
 			container.textContent = `Please add a password at least 6 characters long`;
 			break;
-		case "confirm":
+		case "confirmation":
 			container.textContent = `Please type your password again`;
 			break;
 		default:
@@ -79,16 +73,18 @@ function valueMissing(input, container) {
  * Checks if the password and confirm password values are identical
  */
 function checkPasswords() {
-	if (password.value !== confirm.value) {
-		confirm.classList.remove("success");
-		confirm.classList.add("password-check");
-
-		const messageContainer = document.querySelector(`.confirm-error`);
-		messageContainer.classList.add("error", "active");
-		messageContainer.textContent = `Please check your passwords match`;
+	const messageContainer = document.querySelector(`.confirmation-error`);
+	if (password.value === confirm.value && confirm.value.length > 1) {
+		confirm.classList.remove("password-check", "error");
+		confirm.classList.add("success");
+		messageContainer.classList.add("success-text");
 		return;
 	}
-	confirm.classList.remove("password-check");
+	confirm.classList.remove("success");
+	confirm.classList.add("password-check");
+	messageContainer.classList.remove("success-text");
+	messageContainer.classList.add("error");
+	messageContainer.textContent = `Please check your passwords match`;
 }
 
 /**
@@ -98,17 +94,22 @@ function showErrors() {
 	inputs.forEach((input) => {
 		const messageContainer = document.querySelector(`.${input.id}-error`);
 		if (input.validity.valid) {
+			input.classList.remove("error");
 			input.classList.add("success");
+			messageContainer.classList.add("success-text");
 		} else if (input.validity.valueMissing) {
 			valueMissing(input, messageContainer);
+			messageContainer.classList.remove("success-text");
+			messageContainer.classList.add("error");
 		} else if (input.validity.tooShort) {
 			tooShort(input, messageContainer);
+			messageContainer.classList.remove("success-text");
+			messageContainer.classList.add("error");
 		} else if (input.validity.typeMismatch) {
 			typeMismatch(input, messageContainer);
-		} else if (password.value !== confirm.value) {
-			confirm.classList.add("test");
+			messageContainer.classList.remove("success-text");
+			messageContainer.classList.add("error");
 		}
-		messageContainer.classList.add("error", "active");
 	});
 }
 
@@ -119,20 +120,18 @@ function inputHandler() {
 	inputs.forEach((input) => {
 		if (!input.validity.valid) {
 			showErrors();
+		} else {
+			const messageContainer = document.querySelector(`.${input.id}-error`);
+			messageContainer.classList.remove("error");
+			messageContainer.textContent = `That's a good ${input.id}`;
 		}
-		const messageContainer = document.querySelector(`.${input.id}-error`);
-		messageContainer.classList.remove("error", "active");
-		messageContainer.textContent = "";
 	});
-	showErrors();
 	checkPasswords();
 }
 
 /**
  * Adds attributes to the form required for validity checks
- *
- * @return  {[type]}  [return description]
- */
+ * */
 function setChecks() {
 	username.setAttribute("minlength", 3);
 	username.setAttribute("required", "");
