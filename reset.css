@@ -54,10 +54,6 @@ a:not([class]) {
 img {
 	display: block;
 	max-width: 100%;
-
-	/* Test */
-	height: auto;
-	border-style: none;
 }
 
 /* Inherit fonts for inputs and buttons */
@@ -79,27 +75,28 @@ select {
 	}
 }
 
-/* ==========  My Additions  ========== */
+/* ==========  My Additions  ==========
 
 /* ----  Stylistic options  ---- */
 
-/* Calculate adjustable line-height */
-
+/* Calculate adjustable font-size and line-height */
+/*
 * {
-	line-height: calc(2px + 2ex + 2px);
-}
+	font-size: clamp(1rem, 1rem + 0.5vw, 3rem);
+	line-height: clamp(1.2, 3px + 2ex + 3px, 1.7);
+} */
 
 /* Natural flow and rhythm in articles by default */
-
+/*
 article > * + * {
 	margin-top: 1em;
-}
+} */
 
 /* ----  Accessability  ---- */
-
+/*
 .sr-only {
 	position: absolute;
 	top: -9999px;
 	left: -9999px;
 	clip: rect(1px, 1px, 1px, 1px);
-}
+}  */
