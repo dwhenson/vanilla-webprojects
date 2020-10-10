@@ -30,21 +30,14 @@ function renderHTML(d, h, m, s) {
 }
 
 function convertMS(milliseconds) {
-	let d;
-	let h;
-	let m;
-	let s;
-	s = Math.floor(milliseconds / 1000);
-	m = Math.floor(s / 60);
-	s %= 60;
-	h = Math.floor(m / 60);
-	m %= 60;
-	d = Math.floor(h / 24);
-	h %= 24;
+	const d = Math.floor(milliseconds / 1000 / 60 / 60 / 24);
+	const h = Math.floor(milliseconds / 1000 / 60 / 60) % 24;
+	const m = Math.floor(milliseconds / 1000 / 60) % 60;
+	const s = Math.floor(milliseconds / 1000) % 60;
 	renderHTML(d, h, m, s);
 }
 
-year.textContent = `${new Date().getFullYear()}`;
+year.textContent = `${new Date().getFullYear() + 1}`;
 /* ==========  Inits and Event Listeners  ========== */
 
 setInterval(() => {

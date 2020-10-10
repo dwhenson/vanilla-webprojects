@@ -1,13 +1,19 @@
+* {
+	font-size: clamp(1rem, 1rem + 1vw, 3rem);
+}
+
 body {
 	display: grid;
 	grid-template-columns: minmax(5%, 1fr) minmax(320px, 1000px) minmax(5%, 1fr);
 	height: 100vh;
+	overflow: hidden;
 	background-image: url("https://images.unsplash.com/photo-1467810563316-b5476525c0f9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1349&q=80");
 	background-repeat: no-repeat;
 	background-position: center center;
 	background-size: cover;
 	color: aliceblue;
 	font-family: Arial, Helvetica, sans-serif;
+	text-align: center;
 }
 
 body::after {
@@ -26,26 +32,30 @@ body::after {
 	grid-column: 2;
 	flex-direction: column;
 	align-items: center;
-	margin-top: 50%;
+	justify-content: center;
 }
 
 h1 {
-	margin-bottom: 1em;
-	font-size: 4rem;
+	margin-bottom: 0.25em;
+	font-size: 2.5rem;
 }
 
 .app {
 	display: flex;
-	margin-top: 1em;
-	margin-bottom: auto;
+	margin-top: 0.25em;
 	font-size: 3rem;
 	font-weight: 700;
 	text-align: center;
-	gap: 1em;
+	gap: 0.5em;
 }
 
 .year {
-	margin-bottom: 0.05em;
-	color: rgba(119, 119, 119, 0.5);
-	font-size: 18rem;
+	position: absolute;
+	z-index: -1;
+	bottom: 6rem;
+	left: 50%;
+	transform: translateX(-50%);
+	color: rgba(119, 119, 119, 0.3);
+	font-size: 16rem;
+	line-height: 0;
 }
