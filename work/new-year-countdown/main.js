@@ -42,7 +42,7 @@ year.textContent = `${new Date().getFullYear() + 1}`;
 
 setInterval(() => {
 	const date = new Date();
-	const yearEnd = new Date(date.getFullYear(), 11, 01, 24);
+	const yearEnd = new Date(2022, 11, 01, 24);
 	const timeDifference = yearEnd - date;
 	convertMS(timeDifference);
 }, 1000);
