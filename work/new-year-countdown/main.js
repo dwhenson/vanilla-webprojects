@@ -37,7 +37,7 @@ function convertMS(milliseconds) {
 	renderHTML(d, h, m, s);
 }
 
-year.textContent = `${new Date().getFullYear() + 1}`;
+// year.textContent = `${new Date().getFullYear() + 1}`;
 /* ==========  Inits and Event Listeners  ========== */
 
 setInterval(() => {
